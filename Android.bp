@@ -1,6 +1,9 @@
 //
-// Copyright <C> 2023 Derpfest
+// Copyright (C) 2023 DerpFest
 //
+// SPDX-License-Identifier: Apache-2.0
+//
+
 android_app {
     name: "Prospect",
     platform_apis: true,

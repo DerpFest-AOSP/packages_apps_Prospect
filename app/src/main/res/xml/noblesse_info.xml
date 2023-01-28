@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2023 DerpFest
+     SPDX-License-Identifier: Apache-2.0
+-->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/noblesse_description"
     android:initialKeyguardLayout="@layout/noblesse"
