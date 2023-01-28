@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="165dp"
+    android:layout_height="165dp"
+    android:clickable="false">
+
+    <FrameLayout
+        android:layout_width="165dp"
+        android:layout_height="165dp"
+        android:background="@drawable/ic_noblesse_background"
+        android:clipChildren="true"
+        android:clipToOutline="true">
+
+        <ImageView
+            android:id="@+id/noblesse_status_block"
+            android:layout_width="165dp"
+            android:layout_height="165dp"
+            android:cropToPadding="true"
+            android:src="@drawable/ic_noblesse_foreground" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_noblesse_bubble"
+            android:padding="6dp"
+            android:src="@drawable/bolt"
+            android:tint="@color/noblesse_fg_text" />
+
+        <TextView
+            android:id="@+id/noblesse_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:background="@drawable/ic_noblesse_bubble"
+            android:fontFamily="@font/gsans"
+            android:padding="6dp"
+            android:text="100%"
+            android:textColor="@color/noblesse_fg_text"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+</RelativeLayout>
