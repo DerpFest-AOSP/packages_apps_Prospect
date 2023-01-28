@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.util.Log
 import android.widget.RemoteViews
 import org.derpfest.prospect.utils.NoblesseUpdateService
@@ -42,7 +43,8 @@ class Noblesse : AppWidgetProvider() {
                 batteryPercentage.toInt().toString() + "%"
             )
             val mPaddingSize = 165 - 0.01 * batteryPercentage * 165
-            remoteViews.setViewPadding(R.id.noblesse_status_block, 0, 0, mPaddingSize.toInt(), 0)
+            val pxPaddingSize = (mPaddingSize * Resources.getSystem().displayMetrics.density).toInt()
+            remoteViews.setViewPadding(R.id.noblesse_status_block, 0, 0, pxPaddingSize, 0)
             AppWidgetManager.getInstance(context).updateAppWidget(
                 ComponentName(context, Noblesse::class.java), remoteViews
             )
