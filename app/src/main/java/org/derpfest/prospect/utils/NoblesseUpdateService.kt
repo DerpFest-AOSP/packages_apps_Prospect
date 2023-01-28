@@ -20,7 +20,6 @@ class NoblesseUpdateService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (!mReceiverTag) {
-            Log.d("UpdateService", "onStartCommand()")
             val batteryChangedReceiverFilter = IntentFilter()
             batteryChangedReceiverFilter.addAction(Intent.ACTION_BATTERY_CHANGED)
             registerReceiver(batteryChangedReceiver, batteryChangedReceiverFilter)
@@ -36,7 +35,6 @@ class NoblesseUpdateService : Service() {
     inner class BatteryChangedReceiver : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
-            Log.v("UpdateService", "Successfully updated!")
             val reportIntent = Intent(context, Noblesse::class.java)
             reportIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             val ids = AppWidgetManager.getInstance(application)

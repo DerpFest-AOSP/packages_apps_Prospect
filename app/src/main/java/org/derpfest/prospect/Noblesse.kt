@@ -18,7 +18,6 @@ class Noblesse : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        Log.v("Noblesse", "onUpdate()")
         context.startService(Intent(context, NoblesseUpdateService::class.java))
         // There may be multiple widgets active, so update all of them
     }
