@@ -4,7 +4,7 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	  package="org.derpfest.prospect">
+    package="org.derpfest.prospect">
 
     <application
         android:allowBackup="true"
@@ -13,10 +13,23 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
+        <receiver
+            android:name=".StayDerped"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/stay_derped_info" />
+        </receiver>
+
         <service
             android:name=".utils.NoblesseUpdateService"
             android:enabled="true"
             android:exported="true" />
+
         <receiver
             android:name=".Noblesse"
             android:exported="false">
