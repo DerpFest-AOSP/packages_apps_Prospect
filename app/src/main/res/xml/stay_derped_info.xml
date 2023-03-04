@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/stayderped_description"
+    android:initialKeyguardLayout="@layout/stay_derped"
+    android:initialLayout="@layout/stay_derped"
+    android:minWidth="180dp"
+    android:minHeight="110dp"
+    android:previewLayout="@layout/stay_derped"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellWidth="3"
+    android:targetCellHeight="2"
+    android:updatePeriodMillis="86400000"
+    android:widgetCategory="home_screen" />
