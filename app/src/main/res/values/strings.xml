@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2023 DerpFest
+     SPDX-FileCopyrightText: 2025 DerpFest
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
     <string name="app_name">Prospect</string>
-    <string name="noblesse_description">Noblesse</string>
-    <string name="stayderped_description">#StayDerped</string>
+    <string name="stayderped_name">Stay Derped</string>
+    <string name="stayderped_description">Your ultimate DerpFest companion, now powered by Smartspacer!</string>
+    <string name="smartspacer_icon_description">Icon from Smartspacer</string>
 </resources>

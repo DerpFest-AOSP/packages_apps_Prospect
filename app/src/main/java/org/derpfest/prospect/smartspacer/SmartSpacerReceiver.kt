@@ -1,10 +1,18 @@
 package org.derpfest.prospect
 
+import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.util.Log
+import android.widget.RemoteViews
 import com.kieronquinn.app.smartspacer.sdk.SmartspacerData
+import java.io.File
+import java.io.FileOutputStream
 
 class SmartSpacerReceiver : BroadcastReceiver() {
     companion object {
@@ -14,11 +22,8 @@ class SmartSpacerReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "Received intent: ${intent.action}")
 
-        // Get the Smartspacer data from the intent
         if (intent.action == SmartspacerData.ACTION_UPDATE) {
             val data = SmartspacerData.fromIntent(intent)
-
-            // Handle the received data and update the widget accordingly
             data?.let {
                 updateWidget(context, it)
             }
@@ -26,6 +31,7 @@ class SmartSpacerReceiver : BroadcastReceiver() {
     }
 
     private fun updateWidget(context: Context, data: SmartspacerData) {
+        Log.d(TAG, "Updating widget...")
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val appWidgetIds = appWidgetManager.getAppWidgetIds(
             ComponentName(context, StayDerped::class.java)
@@ -34,33 +40,19 @@ class SmartSpacerReceiver : BroadcastReceiver() {
         for (appWidgetId in appWidgetIds) {
             val views = RemoteViews(context.packageName, R.layout.stay_derped)
 
-            // Get the first target and card (adjust logic as needed)
             val target = data.targets.firstOrNull()
             val card = target?.pages?.firstOrNull()?.cards?.firstOrNull()
 
-           // Update text views
-           views.setTextViewText(R.id.smartspacer_title, card?.title ?: "")
+            Log.d(TAG, "Card data: title=${card?.title}, subtitle=${card?.subtitle}")
+
+            views.setTextViewText(R.id.smartspacer_title, card?.title ?: "")
             views.setTextViewText(R.id.smartspacer_subtitle, card?.subtitle ?: "")
 
-            // Handle image loading (using setImageViewBitmap for API 31+)
             val iconBitmap = card?.icon
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && iconBitmap != null) {
-                views.setImageViewBitmap(R.id.smartspacer_icon, iconBitmap)
-            } else {
-                // Handle image loading for older APIs (using file storage)
-                if (iconBitmap != null) {
-                    val iconFile = File(context.cacheDir, "icon_$appWidgetId.png")
-                    val outputStream = FileOutputStream(iconFile)
-                    iconBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                    outputStream.close()
-
-                    views.setImageViewUri(R.id.smartspacer_icon, Uri.fromFile(iconFile))
-
-                    iconFile.deleteOnExit() // Or delete it later
-                }
+            if (iconBitmap != null) {
+                handleIconLoading(context, views, appWidgetId, iconBitmap)
             }
 
-           // Set click intent if available
             card?.launchIntent?.let { launchIntent ->
                 val pendingIntent = PendingIntent.getActivity(
                     context,
@@ -68,10 +60,31 @@ class SmartSpacerReceiver : BroadcastReceiver() {
                     launchIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
-                views.setOnClickPendingIntent(R.id.widget_container, pendingIntent) // Or apply to a specific view
+                views.setOnClickPendingIntent(R.id.widget_container, pendingIntent)
             }
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
+        }
+    }
+
+    private fun handleIconLoading(context: Context, views: RemoteViews, appWidgetId: Int, iconBitmap: Bitmap) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.d(TAG, "Using setImageViewBitmap for API 31+")
+            views.setImageViewBitmap(R.id.smartspacer_icon, iconBitmap)
+        } else {
+            Log.d(TAG, "Using file storage for image loading")
+            val iconFile = File(context.cacheDir, "icon_$appWidgetId.png")
+            try {
+                val outputStream = FileOutputStream(iconFile)
+                iconBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.close()
+
+                views.setImageViewUri(R.id.smartspacer_icon, Uri.fromFile(iconFile))
+                iconFile.deleteOnExit()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error saving or setting image: ${e.message}")
+                iconFile.delete()
+            }
         }
     }
 }
