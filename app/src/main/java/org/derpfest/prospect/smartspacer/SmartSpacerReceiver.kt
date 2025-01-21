@@ -1,5 +1,6 @@
 package org.derpfest.prospect
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.ComponentName
@@ -37,7 +38,7 @@ class SmartSpacerReceiver : BroadcastReceiver() {
             ComponentName(context, StayDerped::class.java)
         )
 
-        for (appWidgetId in appWidgetIds) {
+        appWidgetIds.forEach { appWidgetId ->
             val views = RemoteViews(context.packageName, R.layout.stay_derped)
 
             val target = data.targets.firstOrNull()
@@ -45,11 +46,10 @@ class SmartSpacerReceiver : BroadcastReceiver() {
 
             Log.d(TAG, "Card data: title=${card?.title}, subtitle=${card?.subtitle}")
 
-            views.setTextViewText(R.id.smartspacer_title, card?.title ?: "")
-            views.setTextViewText(R.id.smartspacer_subtitle, card?.subtitle ?: "")
+            views.setTextViewText(R.id.smartspacer_title, card?.title.orEmpty())
+            views.setTextViewText(R.id.smartspacer_subtitle, card?.subtitle.orEmpty())
 
-            val iconBitmap = card?.icon
-            if (iconBitmap != null) {
+            card?.icon?.let { iconBitmap ->
                 handleIconLoading(context, views, appWidgetId, iconBitmap)
             }
 
@@ -68,23 +68,24 @@ class SmartSpacerReceiver : BroadcastReceiver() {
     }
 
     private fun handleIconLoading(context: Context, views: RemoteViews, appWidgetId: Int, iconBitmap: Bitmap) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Log.d(TAG, "Using setImageViewBitmap for API 31+")
-            views.setImageViewBitmap(R.id.smartspacer_icon, iconBitmap)
-        } else {
-            Log.d(TAG, "Using file storage for image loading")
-            val iconFile = File(context.cacheDir, "icon_$appWidgetId.png")
-            try {
-                val outputStream = FileOutputStream(iconFile)
-                iconBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                outputStream.close()
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                Log.d(TAG, "Using setImageViewBitmap for API 31+")
+                views.setImageViewBitmap(R.id.smartspacer_icon, iconBitmap)
+            } else {
+                Log.d(TAG, "Using file storage for image loading")
+                val iconFile = File(context.cacheDir, "icon_$appWidgetId.png")
+
+                FileOutputStream(iconFile).use { outputStream ->
+                    iconBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                }
 
                 views.setImageViewUri(R.id.smartspacer_icon, Uri.fromFile(iconFile))
                 iconFile.deleteOnExit()
-            } catch (e: Exception) {
-                Log.e(TAG, "Error saving or setting image: ${e.message}")
-                iconFile.delete()
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error handling icon loading: ${e.message}", e)
         }
     }
 }
+
