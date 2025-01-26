@@ -12,7 +12,7 @@ import android.os.BatteryManager
 import android.os.IBinder
 import android.util.Log
 import org.derpfest.prospect.Noblesse
-
+import org.derpfest.prospect.config.WidgetConfigActivity
 
 class NoblesseUpdateService : Service() {
 
@@ -44,18 +44,46 @@ class NoblesseUpdateService : Service() {
             reportIntent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
             val ids = AppWidgetManager.getInstance(application)
                 .getAppWidgetIds(ComponentName(application, Noblesse::class.java))
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+            reportIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
 
             val batteryStatus: Intent? =
                 IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { intentFilter ->
                     context.registerReceiver(null, intentFilter)
                 }
-            val batteryPct: Float? = batteryStatus?.let { mIntent ->
+
+            batteryStatus?.let { mIntent ->
+                // Battery percentage
                 val level: Int = mIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
                 val scale: Int = mIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
-                level * 100 / scale.toFloat()
+                val batteryPct = level * 100 / scale.toFloat()
+                reportIntent.putExtra("BatteryPercentage", batteryPct)
+
+                // Battery temperature
+                val temp = mIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) / 10.0f
+                reportIntent.putExtra("BatteryTemperature", temp)
+
+                // Battery health
+                val health = mIntent.getIntExtra(BatteryManager.EXTRA_HEALTH, BatteryManager.BATTERY_HEALTH_UNKNOWN)
+                reportIntent.putExtra("BatteryHealth", health)
+
+                // Charging status
+                val status = mIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || 
+                                status == BatteryManager.BATTERY_STATUS_FULL
+                reportIntent.putExtra("BatteryCharging", isCharging)
+
+                // Get charging type if charging
+                if (isCharging) {
+                    val chargingType = when (mIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)) {
+                        BatteryManager.BATTERY_PLUGGED_USB -> "USB"
+                        BatteryManager.BATTERY_PLUGGED_AC -> "AC"
+                        BatteryManager.BATTERY_PLUGGED_WIRELESS -> "WIRELESS"
+                        else -> "UNKNOWN"
+                    }
+                    reportIntent.putExtra("ChargingType", chargingType)
+                }
             }
-            reportIntent.putExtra("BatteryPercentage", batteryPct)
+
             sendBroadcast(reportIntent)
         }
     }

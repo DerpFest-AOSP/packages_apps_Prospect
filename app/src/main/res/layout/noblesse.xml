@@ -4,47 +4,72 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="165dp"
-    android:layout_height="165dp"
-    android:clickable="false">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#33000000"
+    android:padding="4dp">
 
-    <FrameLayout
-        android:layout_width="165dp"
-        android:layout_height="165dp"
-        android:background="@drawable/ic_noblesse_background"
-        android:clipChildren="true"
-        android:clipToOutline="true">
+    <!-- Battery Status Block -->
+    <LinearLayout
+        android:id="@+id/noblesse_status_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/noblesse_status_block"
-            android:layout_width="165dp"
-            android:layout_height="165dp"
-            android:cropToPadding="true"
-            android:src="@drawable/ic_noblesse_foreground" />
+        <!-- Battery Level Bar -->
+        <View
+            android:id="@+id/battery_level_bar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#4CAF50" />
 
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_noblesse_bubble"
-            android:padding="6dp"
-            android:src="@drawable/bolt"
-            android:tint="@color/noblesse_fg_text" />
-
+        <!-- Battery Percentage -->
         <TextView
             android:id="@+id/noblesse_percentage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="10dp"
-            android:background="@drawable/ic_noblesse_bubble"
-            android:fontFamily="@font/gsans"
-            android:padding="6dp"
-            android:text="100%"
-            android:textColor="@color/noblesse_fg_text"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-    </FrameLayout>
+            android:layout_marginStart="8dp"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <!-- Charging Indicator -->
+        <ImageView
+            android:id="@+id/charging_indicator"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_charging"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- Additional Info Container -->
+    <LinearLayout
+        android:id="@+id/additional_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/noblesse_status_block"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+
+        <!-- Temperature -->
+        <TextView
+            android:id="@+id/battery_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <!-- Health Status -->
+        <TextView
+            android:id="@+id/battery_health"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </RelativeLayout>

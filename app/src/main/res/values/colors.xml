@@ -18,4 +18,19 @@
     <color name="noblesse_bg">@android:color/system_accent1_100</color>
     <color name="noblesse_fg">@android:color/system_accent1_200</color>
     <color name="noblesse_fg_text">@android:color/system_neutral2_900</color>
+
+    <!-- Battery level colors -->
+    <color name="battery_good">#4CAF50</color>
+    <color name="battery_medium">#FFC107</color>
+    <color name="battery_low">#F44336</color>
+
+    <!-- Widget theme text colors -->
+    <color name="widget_text_default">#FFFFFF</color>
+    <color name="widget_text_dark">#212121</color>
+    <color name="widget_text_light">#FAFAFA</color>
+
+    <!-- Widget background colors -->
+    <color name="widget_bg_default">#33000000</color>
+    <color name="widget_bg_dark">#CCFFFFFF</color>
+    <color name="widget_bg_light">#CC000000</color>
 </resources>
