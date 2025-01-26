@@ -18,6 +18,7 @@ class WidgetConfigActivity : Activity() {
     private lateinit var showBatteryHealth: CheckBox
     private lateinit var updateInterval: Spinner
     private lateinit var themeSelection: RadioGroup
+    private lateinit var widgetPreview: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class WidgetConfigActivity : Activity() {
         showBatteryHealth = findViewById(R.id.showBatteryHealth)
         updateInterval = findViewById(R.id.updateInterval)
         themeSelection = findViewById(R.id.themeSelection)
+        widgetPreview = findViewById(R.id.widget_preview)
 
         // Setup spinner
         ArrayAdapter.createFromResource(
@@ -49,6 +51,16 @@ class WidgetConfigActivity : Activity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             updateInterval.adapter = adapter
+        }
+
+        // Setup theme selection listener
+        themeSelection.setOnCheckedChangeListener { _, checkedId ->
+            val previewDrawable = when (checkedId) {
+                R.id.themeDark -> R.drawable.noblesse_preview_dark
+                R.id.themeLight -> R.drawable.noblesse_preview_light
+                else -> R.drawable.noblesse_preview_default
+            }
+            widgetPreview.setImageResource(previewDrawable)
         }
 
         // Load saved preferences if any
@@ -70,7 +82,16 @@ class WidgetConfigActivity : Activity() {
         showBatteryTemp.isChecked = prefs.getBoolean(getPreferenceKey(PREF_SHOW_TEMP), false)
         showBatteryHealth.isChecked = prefs.getBoolean(getPreferenceKey(PREF_SHOW_HEALTH), false)
         updateInterval.setSelection(prefs.getInt(getPreferenceKey(PREF_UPDATE_INTERVAL), 0))
-        themeSelection.check(prefs.getInt(getPreferenceKey(PREF_THEME), R.id.themeDefault))
+        
+        // Load theme and update preview
+        val savedTheme = prefs.getInt(getPreferenceKey(PREF_THEME), R.id.themeDefault)
+        themeSelection.check(savedTheme)
+        val previewDrawable = when (savedTheme) {
+            R.id.themeDark -> R.drawable.noblesse_preview_dark
+            R.id.themeLight -> R.drawable.noblesse_preview_light
+            else -> R.drawable.noblesse_preview_default
+        }
+        widgetPreview.setImageResource(previewDrawable)
     }
 
     private fun savePreferences() {

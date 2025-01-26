@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="180dp"
+    android:height="40dp"
+    android:viewportWidth="180"
+    android:viewportHeight="40">
+
+    <!-- Background -->
+    <path
+        android:fillColor="@color/widget_bg_dark"
+        android:pathData="M0,0h180v40h-180z"/>
+
+    <!-- Battery Level Bar -->
+    <path
+        android:fillColor="@color/battery_good"
+        android:pathData="M4,4h120v16h-120z"/>
+
+    <!-- Battery Percentage -->
+    <path
+        android:fillColor="@color/widget_text_dark"
+        android:pathData="M130,7h30v10h-30z"/>
+
+    <!-- Charging Icon -->
+    <path
+        android:fillColor="@color/widget_text_dark"
+        android:pathData="M165,7h10v10h-10z"/>
+
+    <!-- Temperature Text -->
+    <path
+        android:fillColor="@color/widget_text_dark"
+        android:pathData="M4,24h50v8h-50z"/>
+
+    <!-- Health Status Text -->
+    <path
+        android:fillColor="@color/widget_text_dark"
+        android:pathData="M60,24h50v8h-50z"/>
+</vector> 
