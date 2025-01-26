@@ -4,14 +4,13 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="org.derpfest.prospect.config.WidgetConfigActivity"
     android:description="@string/noblesse_description"
     android:initialKeyguardLayout="@layout/noblesse"
     android:initialLayout="@layout/noblesse"
-    android:minWidth="110dp"
-    android:minHeight="110dp"
-    android:previewLayout="@layout/noblesse"
-    android:resizeMode="horizontal|vertical"
-    android:targetCellWidth="2"
-    android:targetCellHeight="2"
-    android:updatePeriodMillis="0"
+    android:minWidth="180dp"
+    android:minHeight="40dp"
+    android:previewImage="@drawable/noblesse_preview"
+    android:resizeMode="horizontal"
+    android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen" />
