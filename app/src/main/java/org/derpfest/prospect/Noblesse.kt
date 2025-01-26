@@ -77,9 +77,8 @@ class Noblesse : AppWidgetProvider() {
                 }
                 remoteViews.setInt(R.id.battery_level_bar, "setBackgroundColor", barColor)
 
-                // Update battery level bar width
-                val levelWidth = (batteryPercentage / 100f * Resources.getSystem().displayMetrics.widthPixels).toInt()
-                remoteViews.setViewLayoutWidth(R.id.battery_level_bar, levelWidth)
+                // Update battery level bar width using layout weight
+                remoteViews.setFloat(R.id.battery_level_bar, "setWeight", batteryPercentage / 100f)
 
                 // Show/hide charging indicator
                 remoteViews.setViewVisibility(R.id.charging_indicator, if (isCharging) View.VISIBLE else View.GONE)
