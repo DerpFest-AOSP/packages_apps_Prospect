@@ -13,7 +13,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.util.Log
 import android.widget.RemoteViews
-import org.derpfest.prospect.utils.NoblesseUpdateService
+import org.derpfest.prospect.utils.NoblesseBatteryWorker
 
 /**
  * Implementation of App Widget functionality.
@@ -24,17 +24,17 @@ class Noblesse : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        context.startService(Intent(context, NoblesseUpdateService::class.java))
+        NoblesseBatteryWorker.startBatteryMonitoring(context)
         // There may be multiple widgets active, so update all of them
     }
 
     override fun onEnabled(context: Context) {
-        context.startService(Intent(context, NoblesseUpdateService::class.java))
+        NoblesseBatteryWorker.startBatteryMonitoring(context)
         // Enter relevant functionality for when the first widget is created
     }
 
     override fun onDisabled(context: Context) {
-        context.stopService(Intent(context, NoblesseUpdateService::class.java))
+        NoblesseBatteryWorker.stopBatteryMonitoring(context)
         // Enter relevant functionality for when the last widget is disabled
     }
 

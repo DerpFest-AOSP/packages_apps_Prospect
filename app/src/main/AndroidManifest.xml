@@ -25,11 +25,6 @@
                 android:resource="@xml/stay_derped_info" />
         </receiver>
 
-        <service
-            android:name=".utils.NoblesseUpdateService"
-            android:enabled="true"
-            android:exported="true" />
-
         <receiver
             android:name=".Noblesse"
             android:exported="false">
